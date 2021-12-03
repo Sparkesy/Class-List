@@ -1,5 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Mail;
+using System.IO;
+using System.Drawing.Printing;
+using System.Security;
+using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace Class_List
 {
@@ -19,6 +32,16 @@ namespace Class_List
         {
             // grab the value supplied
             string newstudent = txtbxStudentName.Text;
+            if (newstudent.Length < 2)
+            {
+                MessageBox.Show("Insufficient length for a student name",
+                    "Add Name",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+
+                // kill the method here.
+                return;
+            }
             // add the name to the listbox
             listBox1.Items.Add(newstudent);
             // clear the textbox
@@ -58,6 +81,37 @@ namespace Class_List
                 "Clear names",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
+        }
+
+        private void button2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // check the key pressed
+            if (e.KeyChar == (char)13)
+                button2.PerformClick();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            var Savingfileas = new SaveFileDialog();
+            Savingfileas.Filter = "Text (*.txt)|*.txt ";
+            if (Savingfileas.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var Reminder = new StreamWriter(Savingfileas.FileName, false))
+                    foreach (var item in listBox1.Items)
+                        Reminder.Write(item.ToString() + Environment.NewLine);
+                MessageBox.Show("File has been successfully saved");
+            }
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+          ///mail_Client emc = new Email_Client();
+           //mc.Show();
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
